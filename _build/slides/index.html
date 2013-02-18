@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Automated Cloud Provisioning with Salt Cloud &mdash; Automated Cloud Provisioning with Salt Cloud 2013-02-04 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2013-02-04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    <link rel="top" title="Automated Cloud Provisioning with Salt Cloud 2013-02-04 documentation" href="#" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide level-1" id="automated-cloud-provisioning-with-salt-cloud">
+<h1>Automated Cloud Provisioning with Salt Cloud</h1>
+<ul class="simple">
+<li>Scale 11x</li>
+<li>Feb 22-24, 2013</li>
+<li>Christer Edwards</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="what-is-salt-cloud">
+<h2>What is Salt Cloud</h2>
+<p>Salt Cloud is a public cloud provisioning tool. It is meant to integrate into
+cloud providers in a clean way so that systems on public clouds can be quickly
+and easily modeled and provisioned.</p>
+<p>Salt Cloud allows for cloud-based servers to be managed via virtual machine
+maps and profiles. This means that cloud VMs can be created individually, or
+large groups of systems can be managed at once.</p>
+
+</article>
+<article class="slide level-2" id="what-is-salt-cloud-cont">
+<h2>What is Salt Cloud (cont.)</h2>
+<p>Virtual machines created with Salt Cloud install Salt on the target virtual
+machine and assign it to the specified master. This means that virtual machines
+can be provisioned and then potentially never logged into.</p>
+<p>While Salt Cloud has been made to work with Salt, it is also a generic cloud
+management platform and can be used to manage not Salt-centric clouds.</p>
+
+</article>
+<article class="slide level-2" id="who-does-salt-cloud-support">
+<h2>Who does Salt Cloud support?</h2>
+<img alt="_images/cloud-providers.png" src="_images/cloud-providers.png" />
+
+</article>
+<article class="slide level-2" id="etc-salt-cloud">
+<h2>/etc/salt/cloud</h2>
+<p>Core configuration options can be set in the cloud config file. By default this
+file is located at <tt class="docutils literal"><span class="pre">/etc/salt/cloud</span></tt>.</p>
+<p>The default minion configuration is set up in this file:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">master.domain.tld</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="cloud-configurations">
+<h2>Cloud Configurations</h2>
+<p>Data specific to interacting with public clouds is set up here as well.</p>
+<p><strong>Rackspace</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">RACKSPACE.user</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">RACKSPACE.apikey</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+<p><strong>Amazon AWS</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">AWS.id</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">AWS.key</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">AWS.keyname</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">AWS.securitygroup</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">AWS.private_key</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="cloud-configurations-cont">
+<h2>Cloud Configurations (cont.)</h2>
+<p><strong>Linode</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">LINODE.apikey</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">LINODE.password</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+<p><strong>Joyent Cloud</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">JOYENT.user</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">JOYENT.password</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">JOYENT.private_key</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+<p><strong>GoGrid</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">GOGRID.apikey</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">GOGRID.sharedsecret</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="id1">
+<h2>Cloud Configurations (cont.)</h2>
+<p><strong>IBM Smart Cloud Enterprise</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">IBMSCE.user</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">IBMSCE.password</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">IBMSCE.ssh-key_name</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">IBMSCE.ssh_key_file</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">IBMSCE.location</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+<p><strong>OpenStack for HP</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">OPENSTACK.identity_url</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.compute_name</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.compute_region</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.tenant</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.user</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.ssh_key_name</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.ssh_key_file</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.password</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="id2">
+<h2>Cloud Configurations (cont.)</h2>
+<p><strong>OpenStack for RackSpace</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">OPENSTACK.identity_url</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.compute_name</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.compute_region</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.tenant</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.user</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.password</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">OPENSTACK.protocol</span><span class="p-Indicator">:</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="id3">
+<h2>/etc/salt/cloud</h2>
+<p><strong>Example</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">AWS.id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">HJGRYCILJLKJYG</span>
+<span class="l-Scalar-Plain">AWS.key</span><span class="p-Indicator">:</span> <span class="s">&#39;kdjgfsgm;woormgl/aserigjksjdhasdfgn&#39;</span>
+<span class="l-Scalar-Plain">AWS.keyname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test</span>
+<span class="l-Scalar-Plain">AWS.securitygroup</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">quick-start</span>
+<span class="l-Scalar-Plain">AWS.private_key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/root/test.pem</span>
+
+<span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">saltmaster.example.com</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="vm-profiles">
+<h2>VM Profiles</h2>
+<p>Salt Cloud designates virtual machines inside the profile configuration file. The profile configuration file defaults to <tt class="docutils literal"><span class="pre">/etc/salt/cloud.profiles</span></tt> and is a yaml configuration. The syntax for declaring profiles is simple:</p>
+<p><strong>Example</strong></p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">cent_linode</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
+  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
+  <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6</span>
+
+<span class="l-Scalar-Plain">cent_gogrid</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">gogrid</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">12834</span>
+  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">512MB</span>
+  <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="cloud-map-file">
+<h2>Cloud Map File</h2>
+<p>Map files have a simple format: Specify a profile and then a list of virtual machines to make from said profile.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_small</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web1</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web2</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web3</span>
+<span class="l-Scalar-Plain">fedora_high</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis1</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis2</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis3</span>
+<span class="l-Scalar-Plain">cent_high</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak1</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak2</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak3</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-1" id="demo">
+<h1>Demo</h1>
+
+</article>
+<article class="slide level-1" id="questions">
+<h1>Questions?</h1>
+
+</article>
+<article class="slide level-1" id="credits">
+<h1>Credits</h1>
+<ul class="simple">
+<li>Christer Edwards (<a class="reference external" href="mailto:christer&#46;edwards&#37;&#52;&#48;gmail&#46;com">christer<span>&#46;</span>edwards<span>&#64;</span>gmail<span>&#46;</span>com</a>)</li>
+<li>Salt Stack - <a class="reference external" href="http://saltstack.com">http://saltstack.com</a></li>
+<li>Into the Salt Mine - <a class="reference external" href="http://intothesaltmine.org">http://intothesaltmine.org</a></li>
+</ul>
+
+</article>
+
+
+</section>
+  </body>
+</html>
