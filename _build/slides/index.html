@@ -80,7 +80,7 @@ management platform and can be used to manage not Salt-centric clouds.</p>
 file is located at <tt class="docutils literal"><span class="pre">/etc/salt/cloud</span></tt>.</p>
 <p>The default minion configuration is set up in this file:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">master.domain.tld</span>
+    <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">salt.domain.tld</span>
 </pre></div>
 </div>
 
@@ -163,58 +163,204 @@ file is located at <tt class="docutils literal"><span class="pre">/etc/salt/clou
 <article class="slide level-2" id="id3">
 <h2>/etc/salt/cloud</h2>
 <p><strong>Example</strong></p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">AWS.id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">HJGRYCILJLKJYG</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">AWS.id</span><span class="p-Indicator">:</span> <span class="s">&#39;HJGRYCILJLKJYG&#39;</span>
 <span class="l-Scalar-Plain">AWS.key</span><span class="p-Indicator">:</span> <span class="s">&#39;kdjgfsgm;woormgl/aserigjksjdhasdfgn&#39;</span>
 <span class="l-Scalar-Plain">AWS.keyname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test</span>
 <span class="l-Scalar-Plain">AWS.securitygroup</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">quick-start</span>
 <span class="l-Scalar-Plain">AWS.private_key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/root/test.pem</span>
 
 <span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">saltmaster.example.com</span>
+  <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">salt.domain.tld</span>
 </pre></div>
 </div>
 
 </article>
 <article class="slide level-2" id="vm-profiles">
 <h2>VM Profiles</h2>
-<p>Salt Cloud designates virtual machines inside the profile configuration file. The profile configuration file defaults to <tt class="docutils literal"><span class="pre">/etc/salt/cloud.profiles</span></tt> and is a yaml configuration. The syntax for declaring profiles is simple:</p>
-<p><strong>Example</strong></p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">cent_linode</span><span class="p-Indicator">:</span>
+<p>Salt Cloud designates virtual machines inside the profile configuration file.
+This file defaults to <tt class="docutils literal"><span class="pre">/etc/salt/cloud.profiles</span></tt> and is a yaml configuration.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_aws</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">aws</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ami-6145cc08</span>
+  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Micro Instance</span>
+  <span class="l-Scalar-Plain">ssh_interface</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">public</span>
+  <span class="l-Scalar-Plain">ssh_username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ec2-user</span>
+
+<span class="l-Scalar-Plain">centos_linode</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
   <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
   <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
-  <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6</span>
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="c"># salt-cloud -p centos_linode web1 web2</span>
+</pre></div>
+</div>
 
-<span class="l-Scalar-Plain">cent_gogrid</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">gogrid</span>
-  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">12834</span>
-  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">512MB</span>
-  <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6</span>
+</article>
+<article class="slide level-2" id="vm-profiles-cont">
+<h2>VM Profiles (cont.)</h2>
+<p>It's possible to define the Salt master as well as custom grains in the profile
+itself. This allows you to assign roles as well as point to different Salt
+masters within different providers (read: syndics).</p>
+<p><strong>note</strong>: Automated syndic key management is incomplete yet.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">cent_linode</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="s">&#39;CentOS</span><span class="nv"> </span><span class="s">6.2</span><span class="nv"> </span><span class="s">64bit&#39;</span>
+  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="s">&#39;Linode</span><span class="nv"> </span><span class="s">512&#39;</span>
+  <span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">salt.domain.tld</span>
+  <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">role</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">webserver</span>
 </pre></div>
 </div>
 
 </article>
 <article class="slide level-2" id="cloud-map-file">
 <h2>Cloud Map File</h2>
-<p>Map files have a simple format: Specify a profile and then a list of virtual machines to make from said profile.</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_small</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web1</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web2</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web3</span>
+<p>Map files have a simple format: Specify a profile and then a list of virtual
+machines to make from said profile.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_aws</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web1</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web2</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web3</span>
 <span class="l-Scalar-Plain">fedora_high</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis1</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis2</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis3</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis1</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis2</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">redis3</span>
 <span class="l-Scalar-Plain">cent_high</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak1</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak2</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">riak3</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql1</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql2</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql3</span>
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="nv">$ </span>salt-cloud -m /path/to/map.file
+<span class="o">[</span>root@master ~<span class="o">]</span><span class="nv">$ </span>salt-cloud -m /path/to/map.file -P
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="cloud-map-file-cont">
+<h2>Cloud Map File (cont.)</h2>
+<p>Cloud map files can also include grains:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_small</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">webserver</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">mysql</span>
+  <span class="l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-1" id="bootstrapping-salt">
+<h1>Bootstrapping Salt</h1>
+<p>Salt Cloud supports a few methods for bootstrapping Salt onto the newly
+provisioned machine.</p>
+<blockquote>
+<div><ul class="simple">
+<li>script:</li>
+<li>salt-bootstrap</li>
+</ul>
+</div></blockquote>
+
+</article>
+<article class="slide level-2" id="script">
+<h2>script:</h2>
+<p><tt class="docutils literal"><span class="pre">site-packages/saltcloud/deploy/</span></tt> includes a number of distribution-specific
+installation scripts. Example: <tt class="docutils literal"><span class="pre">Fedora.sh</span></tt></p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+yum install -y salt-minion
+<span class="c"># Save the minion public and private RSA keys</span>
+mkdir -p /etc/salt/pki
+<span class="nb">echo</span> <span class="s1">&#39;{{ vm[&#39;</span>priv_key<span class="s1">&#39;] }}&#39;</span> &gt; /etc/salt/pki/minion.pem
+<span class="nb">echo</span> <span class="s1">&#39;{{ vm[&#39;</span>pub_key<span class="s1">&#39;] }}&#39;</span> &gt; /etc/salt/pki/minion.pub
+<span class="c"># Copy the minion configuration file into place</span>
+<span class="nb">echo</span> <span class="s1">&#39;{{ minion }}&#39;</span> &gt; /etc/salt/minion
+<span class="c"># Set the minion to start on reboot</span>
+systemctl <span class="nb">enable </span>salt-minion.service
+<span class="c"># Start the minion!</span>
+systemctl start salt-minion.service
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="script-usage">
+<h2>script: usage</h2>
+<p>To use a distribution-specific deployment script, simply use the <tt class="docutils literal"><span class="pre">script:</span></tt>
+option within the profile definition.</p>
+<div class="highlight-yaml"><div class="highlight"><pre> <span class="l-Scalar-Plain">centos_linode</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
+   <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
+   <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
+<span class="hll">   <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6.sh</span>
+</span></pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="salt-bootstrap">
+<h2>salt-bootstrap</h2>
+<p>This script runs through a series of checks to determine operating system type
+and version to then install the Salt binaries using the appropriate methods.</p>
+<div class="highlight-yaml"><div class="highlight"><pre> <span class="l-Scalar-Plain">centos_linode</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
+   <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
+   <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
+<span class="hll">   <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bootstrap-salt</span>
+</span></pre></div>
+</div>
+<p><strong>note</strong>: salt-bootstrap is the default as of <tt class="docutils literal"><span class="pre">0.8.4</span></tt>. If you omit the script
+option, salt-bootstrap will be used.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="c"># salt-cloud [-u|--update-bootstrap]</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="setting-up-salt-masters">
+<h2>Setting up Salt Masters</h2>
+<div class="highlight-yaml"><div class="highlight"><pre> <span class="l-Scalar-Plain">centos_linode</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
+   <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
+   <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
+   <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bootstrap-salt</span>
+<span class="hll">   <span class="l-Scalar-Plain">make_master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span>   <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span>
+     <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+     <span class="l-Scalar-Plain">interface</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">0.0.0.0</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="no-deployment">
+<h2>No deployment</h2>
+<p>It is also possible to simply provision instances without Salting them.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">deploy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
+<span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">None</span>
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="c"># salt-cloud --no-deploy -p profile instance</span>
 </pre></div>
 </div>
 
 </article>
 <article class="slide level-1" id="demo">
 <h1>Demo</h1>
+
+</article>
+<article class="slide level-1" id="what-s-coming">
+<h1>What's Coming?</h1>
+<p>Salt 0.14.0 will include initial versions of Salt-Virt</p>
+<ul class="simple">
+<li>KVM support first (libvirt)</li>
+<li><tt class="docutils literal"><span class="pre">salt.run</span> <span class="pre">virt.query</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">salt.run</span> <span class="pre">virt.init</span> <span class="pre">$name</span> <span class="pre">$cpu</span> <span class="pre">$ram</span> <span class="pre">$image</span></tt></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Images served from: salt://, http://, ftp://</li>
+</ul>
+</div></blockquote>
 
 </article>
 <article class="slide level-1" id="questions">
@@ -226,6 +372,7 @@ file is located at <tt class="docutils literal"><span class="pre">/etc/salt/clou
 <ul class="simple">
 <li>Christer Edwards (<a class="reference external" href="mailto:christer&#46;edwards&#37;&#52;&#48;gmail&#46;com">christer<span>&#46;</span>edwards<span>&#64;</span>gmail<span>&#46;</span>com</a>)</li>
 <li>Salt Stack - <a class="reference external" href="http://saltstack.com">http://saltstack.com</a></li>
+<li>Salt Cloud Docs - <a class="reference external" href="http://salt-cloud.readthedocs.org">http://salt-cloud.readthedocs.org</a></li>
 <li>Into the Salt Mine - <a class="reference external" href="http://intothesaltmine.org">http://intothesaltmine.org</a></li>
 </ul>
 
