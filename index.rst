@@ -32,6 +32,10 @@ Who does Salt Cloud support?
 
 .. image:: /images/cloud-providers.png
 
+=============
+Configuration
+=============
+
 /etc/salt/cloud
 ---------------
 
@@ -50,13 +54,6 @@ Cloud Configurations
 
 Data specific to interacting with public clouds is set up here as well.
 
-**Rackspace**
-
-.. code-block:: yaml
-
-    RACKSPACE.user:
-    RACKSPACE.apikey:
-
 **Amazon AWS**
 
 .. code-block:: yaml
@@ -67,15 +64,15 @@ Data specific to interacting with public clouds is set up here as well.
     AWS.securitygroup:
     AWS.private_key:
 
-Cloud Configurations (cont.)
-----------------------------
-
 **Linode**
 
 .. code-block:: yaml
 
     LINODE.apikey:
     LINODE.password:
+
+Cloud Configurations (cont.)
+----------------------------
 
 **Joyent Cloud**
 
@@ -149,8 +146,12 @@ Cloud Configurations (cont.)
     minion:
       master: salt.domain.tld
 
+===========
 VM Profiles
------------
+===========
+
+Profiles
+--------
 
 Salt Cloud designates virtual machines inside the profile configuration file.
 This file defaults to ``/etc/salt/cloud.profiles`` and is a yaml configuration. 
@@ -192,6 +193,10 @@ masters within different providers (read: syndics).
         master: salt.domain.tld
       grains:
         role: webserver
+
+====
+Maps
+====
 
 Cloud Map File
 --------------
@@ -242,8 +247,8 @@ Bootstrapping Salt
 Salt Cloud supports a few methods for bootstrapping Salt onto the newly
 provisioned machine.
 
- - script: 
- - salt-bootstrap
+ - script: (<0.8.4)
+ - salt-bootstrap (>=0.8.4)
 
 script:
 -------
@@ -279,7 +284,7 @@ option within the profile definition.
       provider: linode
       image: CentOS 6.2 64bit
       size: Linode 512
-      script: RHEL6.sh
+      script: RHEL6
 
 salt-bootstrap
 --------------
@@ -307,7 +312,7 @@ Setting up Salt Masters
 -----------------------
 
 .. code-block:: yaml
-   :emphasize-lines: 6
+   :emphasize-lines: 6-9
 
     centos_linode:
       provider: linode

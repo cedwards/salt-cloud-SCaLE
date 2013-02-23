@@ -74,6 +74,10 @@ management platform and can be used to manage not Salt-centric clouds.</p>
 <img alt="_images/cloud-providers.png" src="_images/cloud-providers.png" />
 
 </article>
+<article class="slide level-1" id="configuration">
+<h1>Configuration</h1>
+
+</article>
 <article class="slide level-2" id="etc-salt-cloud">
 <h2>/etc/salt/cloud</h2>
 <p>Core configuration options can be set in the cloud config file. By default this
@@ -88,11 +92,6 @@ file is located at <tt class="docutils literal"><span class="pre">/etc/salt/clou
 <article class="slide level-2" id="cloud-configurations">
 <h2>Cloud Configurations</h2>
 <p>Data specific to interacting with public clouds is set up here as well.</p>
-<p><strong>Rackspace</strong></p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">RACKSPACE.user</span><span class="p-Indicator">:</span>
-<span class="l-Scalar-Plain">RACKSPACE.apikey</span><span class="p-Indicator">:</span>
-</pre></div>
-</div>
 <p><strong>Amazon AWS</strong></p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">AWS.id</span><span class="p-Indicator">:</span>
 <span class="l-Scalar-Plain">AWS.key</span><span class="p-Indicator">:</span>
@@ -101,15 +100,15 @@ file is located at <tt class="docutils literal"><span class="pre">/etc/salt/clou
 <span class="l-Scalar-Plain">AWS.private_key</span><span class="p-Indicator">:</span>
 </pre></div>
 </div>
-
-</article>
-<article class="slide level-2" id="cloud-configurations-cont">
-<h2>Cloud Configurations (cont.)</h2>
 <p><strong>Linode</strong></p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">LINODE.apikey</span><span class="p-Indicator">:</span>
 <span class="l-Scalar-Plain">LINODE.password</span><span class="p-Indicator">:</span>
 </pre></div>
 </div>
+
+</article>
+<article class="slide level-2" id="cloud-configurations-cont">
+<h2>Cloud Configurations (cont.)</h2>
 <p><strong>Joyent Cloud</strong></p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">JOYENT.user</span><span class="p-Indicator">:</span>
 <span class="l-Scalar-Plain">JOYENT.password</span><span class="p-Indicator">:</span>
@@ -175,8 +174,12 @@ file is located at <tt class="docutils literal"><span class="pre">/etc/salt/clou
 </div>
 
 </article>
-<article class="slide level-2" id="vm-profiles">
-<h2>VM Profiles</h2>
+<article class="slide level-1" id="vm-profiles">
+<h1>VM Profiles</h1>
+
+</article>
+<article class="slide level-2" id="profiles">
+<h2>Profiles</h2>
 <p>Salt Cloud designates virtual machines inside the profile configuration file.
 This file defaults to <tt class="docutils literal"><span class="pre">/etc/salt/cloud.profiles</span></tt> and is a yaml configuration.</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_aws</span><span class="p-Indicator">:</span>
@@ -213,6 +216,10 @@ masters within different providers (read: syndics).</p>
     <span class="l-Scalar-Plain">role</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">webserver</span>
 </pre></div>
 </div>
+
+</article>
+<article class="slide level-1" id="maps">
+<h1>Maps</h1>
 
 </article>
 <article class="slide level-2" id="cloud-map-file">
@@ -260,8 +267,8 @@ machines to make from said profile.</p>
 provisioned machine.</p>
 <blockquote>
 <div><ul class="simple">
-<li>script:</li>
-<li>salt-bootstrap</li>
+<li>script: (&lt;0.8.4)</li>
+<li>salt-bootstrap (&gt;=0.8.4)</li>
 </ul>
 </div></blockquote>
 
@@ -294,7 +301,7 @@ option within the profile definition.</p>
    <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
    <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
-<span class="hll">   <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6.sh</span>
+<span class="hll">   <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RHEL6</span>
 </span></pre></div>
 </div>
 
@@ -325,10 +332,10 @@ option, salt-bootstrap will be used.</p>
    <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
    <span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bootstrap-salt</span>
 <span class="hll">   <span class="l-Scalar-Plain">make_master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
-</span>   <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span>
-     <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
-     <span class="l-Scalar-Plain">interface</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">0.0.0.0</span>
-</pre></div>
+</span><span class="hll">   <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span>
+</span><span class="hll">     <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+</span><span class="hll">     <span class="l-Scalar-Plain">interface</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">0.0.0.0</span>
+</span></pre></div>
 </div>
 
 </article>
