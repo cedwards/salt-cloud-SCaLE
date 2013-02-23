@@ -193,8 +193,8 @@ masters within different providers (read: syndics).
 
     cent_linode:
       provider: linode
-      image: 'CentOS 6.2 64bit'
-      size: 'Linode 512'
+      image: CentOS 6.2 64bit
+      size: Linode 512
       minion:
         master: salt.domain.tld
       grains:
@@ -310,12 +310,16 @@ and version to then install the Salt binaries using the appropriate methods.
 **note**: salt-bootstrap is the default as of ``0.8.4``. If you omit the script
 option, salt-bootstrap will be used.
 
+To update salt-bootstrap to the latest revision:
+
 .. code-block:: bash
 
     [root@master ~]# salt-cloud [-u|--update-bootstrap]
 
 Setting up Salt Masters
 -----------------------
+
+salt-bootstrap also supports deploying Salt Masters. 
 
 .. code-block:: yaml
    :emphasize-lines: 6-9
@@ -333,12 +337,20 @@ Setting up Salt Masters
 No deployment
 -------------
 
-It is also possible to simply provision instances without Salting them.
+It is also possible to simply provision instances without deploying Salt to 
+them. In the ``cloud.profile`` simply define one of the following:
 
 .. code-block:: yaml
 
     deploy: False
+
+Or
+
+.. code-block:: yaml
+    
     script: None
+
+Or from the command-line options:
 
 .. code-block:: bash
 
@@ -372,3 +384,8 @@ Credits
 - Salt Stack - http://saltstack.com
 - Salt Cloud Docs - http://salt-cloud.readthedocs.org
 - Into the Salt Mine - http://intothesaltmine.org
+
+- Slides: `sphinx-doc`_ + `hieroglyph`_
+
+.. _`sphinx-doc`: http://sphinx-doc.org/ 
+.. _`hieroglyph`: http://yergler.net/projects/hieroglyph/
