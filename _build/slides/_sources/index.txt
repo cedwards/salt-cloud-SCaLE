@@ -6,6 +6,12 @@ Automated Cloud Provisioning with Salt Cloud
 - Feb 22-24, 2013
 - Christer Edwards
 
+Disclaimer
+----------
+
+.. image:: /images/beta.jpg
+   :align: center
+
 What is Salt Cloud
 ------------------
 
@@ -234,10 +240,10 @@ Cloud map files can also include grains:
     fedora_small:
       - web1:
           grains:
-            webserver
+            role: webserver
       - web2:
           grains:
-            mysql
+            role: mysql
       ...
 
 ==================

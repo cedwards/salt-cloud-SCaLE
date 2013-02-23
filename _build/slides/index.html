@@ -50,6 +50,11 @@
 </ul>
 
 </article>
+<article class="slide level-2" id="disclaimer">
+<h2>Disclaimer</h2>
+<img alt="_images/beta.jpg" class="align-center" src="_images/beta.jpg" />
+
+</article>
 <article class="slide level-2" id="what-is-salt-cloud">
 <h2>What is Salt Cloud</h2>
 <p>Salt Cloud is a public cloud provisioning tool. It is meant to integrate into
@@ -252,10 +257,10 @@ machines to make from said profile.</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">fedora_small</span><span class="p-Indicator">:</span>
   <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web1</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">webserver</span>
+        <span class="l-Scalar-Plain">role</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">webserver</span>
   <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web2</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">mysql</span>
+        <span class="l-Scalar-Plain">role</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql</span>
   <span class="l-Scalar-Plain">...</span>
 </pre></div>
 </div>
