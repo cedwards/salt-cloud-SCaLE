@@ -213,8 +213,8 @@ masters within different providers (read: syndics).</p>
 <p><strong>note</strong>: Automated syndic key management is incomplete yet.</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">cent_linode</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
-  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="s">&#39;CentOS</span><span class="nv"> </span><span class="s">6.2</span><span class="nv"> </span><span class="s">64bit&#39;</span>
-  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="s">&#39;Linode</span><span class="nv"> </span><span class="s">512&#39;</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
+  <span class="l-Scalar-Plain">size</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Linode 512</span>
   <span class="l-Scalar-Plain">minion</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">master</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">salt.domain.tld</span>
   <span class="l-Scalar-Plain">grains</span><span class="p-Indicator">:</span>
@@ -324,6 +324,7 @@ and version to then install the Salt binaries using the appropriate methods.</p>
 </div>
 <p><strong>note</strong>: salt-bootstrap is the default as of <tt class="docutils literal"><span class="pre">0.8.4</span></tt>. If you omit the script
 option, salt-bootstrap will be used.</p>
+<p>To update salt-bootstrap to the latest revision:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="c"># salt-cloud [-u|--update-bootstrap]</span>
 </pre></div>
 </div>
@@ -331,6 +332,7 @@ option, salt-bootstrap will be used.</p>
 </article>
 <article class="slide level-2" id="setting-up-salt-masters">
 <h2>Setting up Salt Masters</h2>
+<p>salt-bootstrap also supports deploying Salt Masters.</p>
 <div class="highlight-yaml"><div class="highlight"><pre> <span class="l-Scalar-Plain">centos_linode</span><span class="p-Indicator">:</span>
    <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">linode</span>
    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CentOS 6.2 64bit</span>
@@ -346,11 +348,16 @@ option, salt-bootstrap will be used.</p>
 </article>
 <article class="slide level-2" id="no-deployment">
 <h2>No deployment</h2>
-<p>It is also possible to simply provision instances without Salting them.</p>
+<p>It is also possible to simply provision instances without deploying Salt to
+them. In the <tt class="docutils literal"><span class="pre">cloud.profile</span></tt> simply define one of the following:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">deploy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
-<span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">None</span>
 </pre></div>
 </div>
+<p>Or</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">None</span>
+</pre></div>
+</div>
+<p>Or from the command-line options:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>root@master ~<span class="o">]</span><span class="c"># salt-cloud --no-deploy -p profile instance</span>
 </pre></div>
 </div>
@@ -386,6 +393,7 @@ option, salt-bootstrap will be used.</p>
 <li>Salt Stack - <a class="reference external" href="http://saltstack.com">http://saltstack.com</a></li>
 <li>Salt Cloud Docs - <a class="reference external" href="http://salt-cloud.readthedocs.org">http://salt-cloud.readthedocs.org</a></li>
 <li>Into the Salt Mine - <a class="reference external" href="http://intothesaltmine.org">http://intothesaltmine.org</a></li>
+<li>Slides: <a class="reference external" href="http://sphinx-doc.org/">sphinx-doc</a> + <a class="reference external" href="http://yergler.net/projects/hieroglyph/">hieroglyph</a></li>
 </ul>
 
 </article>
